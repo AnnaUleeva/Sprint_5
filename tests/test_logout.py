@@ -1,33 +1,12 @@
-from selenium.webdriver.common.by import By
-from selenium import webdriver
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from constants import default_url
-from user import User
+from locators import Locators
 
-import locators
 
-driver = webdriver.Chrome()
-driver.get(default_url)
+class TestLogout:
+    def test_logout_by_exit_button(self, profile_driver):
+        profile_driver.find_element(*Locators.user_screen_logout_button).click()
 
-user = User()
-
-driver.find_element(By.XPATH, locators.app_header_enter_link).click()
-
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, locators.login_screen_title)))
-
-driver.find_element(By.XPATH, locators.login_screen_email_input).send_keys(user.get_email())
-driver.find_element(By.XPATH, locators.login_screen_password_input).send_keys(user.get_password())
-driver.find_element(By.XPATH, locators.login_screen_submit_button).click()
-
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, locators.main_screen_title)))
-driver.find_element(By.XPATH, locators.app_header_enter_link).click()
-
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, locators.user_screen_title)))
-driver.find_element(By.XPATH, locators.user_screen_logout_button).click()
-
-WebDriverWait(driver, 3).until(expected_conditions.visibility_of_element_located((By.XPATH, locators.login_screen_title)))
-assert '/login' in driver.current_url
-
-driver.quit()
+        WebDriverWait(profile_driver, 3).until(expected_conditions.visibility_of_element_located(Locators.login_screen_title))
+        assert profile_driver.find_element(*Locators.login_screen_title).is_displayed()

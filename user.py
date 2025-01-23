@@ -1,6 +1,7 @@
 import random
 
-from constants import email_prefix, email_domain
+email_prefix = 'annauleeva17'
+email_domain = '@yandex.ru'
 
 class User:
     def __init__(self):
